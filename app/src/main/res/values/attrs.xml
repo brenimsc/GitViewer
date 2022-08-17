@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CountDescription">
+        <attr name="description" format="string"/>
+        <attr name="qtd" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="NavBarCustomized">
+        <attr name="format" format="string"/>
+        <attr name="titleNavBar" format="string"/>
+        <attr name="drawableStart" format="integer"/>
+        <attr name="iconEnd" format="integer"/>
+        <attr name="clickIconEnd" format="reference"/>
+        <attr name="navBarType" format="enum">
+            <enum name="title" value="0"/>
+            <enum name="back_title_close" value="1"/>
+            <enum name="back_title" value="2"/>
+            <enum name="close_title" value="3"/>
+            <enum name="back_close" value="4"/>
+        </attr>
+    </declare-styleable>
+
+</resources>

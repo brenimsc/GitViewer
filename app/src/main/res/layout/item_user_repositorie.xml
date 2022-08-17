@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/login_item_user_repositorie"
+        app:layout_constraintEnd_toStartOf="@id/login_item_user_repositorie"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/login_item_user_repositorie" />
+
+    <TextView
+        android:id="@+id/login_item_user_repositorie"
+        android:layout_width="wrap_content"
+        android:textColor="@color/gray_dark"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="b_carvalho" />
+
+    <TextView
+        android:id="@+id/name_item_user_repositorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/red"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_item_user_repositorie"
+        tools:text="Dev" />
+
+    <ImageView
+        android:id="@+id/img_globe_item_user_repositorie"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_world"
+        app:layout_constraintBottom_toBottomOf="@id/name_item_user_repositorie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/name_item_user_repositorie" />
+
+    <TextView
+        android:id="@+id/description_item_user_repositorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_item_user_repositorie"
+        tools:text="Como fazer isso aqui em Dev" />
+
+    <ImageView
+        android:id="@+id/fork_image_item_user_repositorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_fork"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description_item_user_repositorie" />
+
+    <TextView
+        android:id="@+id/branch_item_user_repositorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/fork_image_item_user_repositorie"
+        app:layout_constraintStart_toEndOf="@id/fork_image_item_user_repositorie"
+        app:layout_constraintTop_toTopOf="@id/fork_image_item_user_repositorie"
+        tools:text="Branch: master"
+        android:text="@string/branch" />
+
+    <ImageView
+        android:id="@+id/img_star_item_user_repositorie"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_star"
+        app:layout_constraintBottom_toBottomOf="@id/branch_item_user_repositorie"
+        app:layout_constraintEnd_toStartOf="@id/qtd_star_item_user_repositorie"
+        app:layout_constraintTop_toTopOf="@id/branch_item_user_repositorie" />
+
+    <TextView
+        android:id="@+id/qtd_star_item_user_repositorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/img_star_item_user_repositorie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/img_star_item_user_repositorie"
+        tools:text="30" />
+
+    <ImageView
+        android:id="@+id/img_watch_item_user_repositorie"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="4dp"
+        android:src="@drawable/ic_eyes"
+        app:layout_constraintBottom_toBottomOf="@id/qtd_star_item_user_repositorie"
+        app:layout_constraintEnd_toStartOf="@id/qtd_watch_item_user_repositorie"
+        app:layout_constraintTop_toTopOf="@id/qtd_star_item_user_repositorie" />
+
+    <TextView
+        android:id="@+id/qtd_watch_item_user_repositorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/branch_item_user_repositorie"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/img_star_item_user_repositorie"
+        app:layout_constraintTop_toTopOf="@id/branch_item_user_repositorie"
+        tools:text="20" />
+
+    <TextView
+        android:id="@+id/language_item_user_repositorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="italic"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/language_circle_item_user_repositorie"
+        app:layout_constraintTop_toBottomOf="@id/branch_item_user_repositorie"
+        tools:text="Linguagem: Kotlin 100%"
+        android:text="@string/language" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/language_circle_item_user_repositorie"
+        app:layout_constraintTop_toTopOf="@id/language_item_user_repositorie"
+        app:layout_constraintBottom_toBottomOf="@id/language_item_user_repositorie"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        android:layout_width="15dp"
+        android:layout_marginStart="8dp"
+        app:cardBackgroundColor="@color/black"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="10dp"
+        android:layout_height="15dp"/>
+
+    <ImageView
+        android:id="@+id/img_clock_updated_item_user_repositorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_clock_time"
+        app:layout_constraintTop_toTopOf="@id/language_item_user_repositorie"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/language_item_user_repositorie" />
+
+    <TextView
+        android:id="@+id/date_updated_item_user_repositorie"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/language_item_user_repositorie"
+        app:layout_constraintStart_toEndOf="@+id/img_clock_updated_item_user_repositorie"
+        app:layout_constraintBottom_toBottomOf="@id/language_item_user_repositorie"
+        tools:text="2021-12-03" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
