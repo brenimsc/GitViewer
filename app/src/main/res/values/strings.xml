@@ -23,6 +23,17 @@
     <string name="repos">Repositórios</string>
     <string name="language">Linguagem: %1$s</string>
     <string name="branch">Branch: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_especification">Sem especificação</string>
+    <string name="last_events">Últimos eventos relacionados a este repositório</string>
+    <string name="no_description">Sem descrição</string>
+    <string name="loading">Carregando…</string>
+    <string name="retry">Recarregar</string>
+    <string name="try_again">Tente novamente</string>
+    <string name="ops_error">Ops! Algo deu errado :/</string>
+    <string name="nothing_phrase">Parece que nada foi encontrado por aqui.</string>
+    <string name="search_repository">Pesquise algum reposótório</string>
+    <string name="search_new_perfil">Pesquise um novo perfil</string>
+    <string name="dica_name_user">Dica: Digite exatamente o nome do usuário</string>
+    <string name="open_github">Abrir Github</string>
+    <string name="find">Buscar</string>
 </resources>

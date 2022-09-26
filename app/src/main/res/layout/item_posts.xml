@@ -1,71 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <View
-        android:layout_marginTop="4dp"
-        android:id="@+id/view_post"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+    <data>
+        <variable
+            name="post"
+            type="com.breno.gitviewer.model.Post" />
+
+        <import type="com.breno.gitviewer.extensions.ContextExtensionsKt" />
+
+        <import type="com.breno.gitviewer.R" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/gray_separator"
-        android:layout_height="4dp"/>
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_margin="8dp"
-        android:layout_marginTop="4dp"
-        android:id="@+id/image_post"
-        android:background="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_post"
-        android:layout_width="110dp"
-        android:layout_height="110dp"/>
+        <View
+            android:id="@+id/view_post"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/gray_separator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txt_name_user_post"
-        app:layout_constraintStart_toEndOf="@id/image_post"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/image_post"
-        android:layout_marginStart="8dp"
-        tools:text="Terrua"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/image_post"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_margin="8dp"
+            android:layout_marginTop="4dp"
+            android:background="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_post"
+            app:loadImage="@{post.owner.avatar_url}" />
 
-    <TextView
-        android:id="@+id/txt_description_post"
-        app:layout_constraintTop_toBottomOf="@id/txt_name_user_post"
-        app:layout_constraintStart_toStartOf="@id/txt_name_user_post"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
-        android:maxLines="2"
-        android:ellipsize="end"
-        tools:text="Lista de empresas com trabalho remoto no Brasil"
-        android:textColor="@color/color_description"
-        android:textSize="17sp"
-        android:textStyle="bold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txt_name_user_post"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{post.name}"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/image_post"
+            app:layout_constraintTop_toTopOf="@id/image_post"
+            tools:text="Terrua" />
 
-    <TextView
-        android:id="@+id/txt_view_more_post"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_description_post"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:text="@string/view_more"
-        android:padding="8dp"
-        android:textColor="@color/gray_light"
-        android:textSize="15sp"
-        android:textStyle="italic|bold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/txt_description_post"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{post.description ?? ContextExtensionsKt.getString(context, R.string.no_description)}"
+            android:textColor="@color/color_description"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/txt_name_user_post"
+            app:layout_constraintTop_toBottomOf="@id/txt_name_user_post"
+            tools:text="Lista de empresas com trabalho remoto no Brasil" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/txt_view_more_post"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:padding="8dp"
+            android:text="@string/view_more"
+            android:textColor="@color/gray_light"
+            android:textSize="15sp"
+            android:textStyle="italic|bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_description_post" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

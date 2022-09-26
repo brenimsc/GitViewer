@@ -13,9 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GitViewer">
         <activity
-            android:name=".slide.SlideUserListActivity"
-            android:exported="false" >
-        </activity>
+            android:name=".user.SearchUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".slide.ui.SlideUserListActivity"
+            android:exported="false" />
         <activity
             android:name=".user.ui.UserListActivity"
             android:exported="false" />

@@ -1,59 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".user.ui.UserListActivity"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".user.ui.UserListActivity">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.breno.gitviewer.user.viewmodel.UserListViewModel" />
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
     </data>
-<androidx.constraintlayout.widget.ConstraintLayout
 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/title_user_list"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@{viewModel.title}"
-        tools:text="Visualizadores"
-        android:textSize="28sp"
-        android:layout_marginStart="16dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:padding="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_regular"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:invisible="@{viewModel.error}">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_user_list"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_user_list"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="4dp"
-        android:visibility="@{!viewModel.resultVisibility ? View.VISIBLE : View.GONE}"
-        tools:listitem="@layout/item_user_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"/>
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    <ProgressBar
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone"
-        android:visibility="@{viewModel.resultVisibility ? View.VISIBLE : View.GONE}"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <androidx.appcompat.widget.Toolbar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:minHeight="?attr/actionBarSize"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:title="@{viewModel.typeTitle}"
+                        app:titleMarginStart="48dp"
+                        app:titleTextColor="@color/black"
+                        tools:title="Visualizadores" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:onClick="@{() -> viewModel.onClick(viewModel.BACK)}"
+                        android:src="@drawable/ic_arrow_left"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:onClick="@{() -> viewModel.onClick(viewModel.CLOSE)}"
+                        android:src="@drawable/ic_close"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_user_list"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="4dp"
+                app:adapter="@{viewModel.adapter}"
+                app:empty="@{viewModel.empty}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:qtdSkeleton="@{9}"
+                app:skeleton="@{viewModel.loading &amp; !viewModel.empty}"
+                tools:listitem="@layout/item_user_list" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            layout="@layout/layout_error"
+            app:onClickRetry="@{() -> viewModel.onClick(viewModel.RETRY)}"
+            app:visible="@{viewModel.error}"
+            tools:visibility="gone" />
+
+        <include
+            layout="@layout/layout_empty"
+            app:visible="@{viewModel.empty}"
+            tools:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

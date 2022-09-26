@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.breno.gitviewer.user.viewmodel.UserDetailsViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="?attr/actionBarSize"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:title="Perfil"
+                        app:titleMarginStart="48dp"
+                        app:titleTextColor="@color/white" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:onClick="@{() -> viewModel.onClick(viewModel.BACK)}"
+                        android:src="@drawable/ic_arrow_left"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/white" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:onClick="@{() -> viewModel.onClick(viewModel.CLOSE)}"
+                        android:src="@drawable/ic_close"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/white" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_item_user"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="?attr/actionBarSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:loadImage="@{viewModel.user.avatar_url}"
+                tools:background="@color/black"
+                tools:src="@drawable/ic_launcher_foreground" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="@id/img_item_user"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/img_item_user"
+                app:layout_constraintTop_toTopOf="@id/img_item_user">
+
+                <com.breno.gitviewer.custom.CountDescription
+                    android:id="@+id/count_description_repos_item_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    app:description="@string/repos"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/count_description_followers_item_user"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:qtd="@{viewModel.user.public_repos.toString()}" />
+
+                <com.breno.gitviewer.custom.CountDescription
+                    android:id="@+id/count_description_followers_item_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:onClick="@{() -> viewModel.onClick(viewModel.USERS_FOLLOWERS)}"
+                    app:description="@string/followers"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/count_description_following_item_user"
+                    app:layout_constraintStart_toEndOf="@id/count_description_repos_item_user"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:qtd="@{viewModel.user.followers.toString()}" />
+
+
+                <com.breno.gitviewer.custom.CountDescription
+                    android:id="@+id/count_description_following_item_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> viewModel.onClick(viewModel.USERS_FOLLOWING)}"
+                    app:description="@string/following"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/count_description_followers_item_user"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:qtd="@{viewModel.user.following.toString()}" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/name_item_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="10dp"
+                android:text="@{viewModel.user.login}"
+                app:layout_constraintEnd_toEndOf="@id/img_item_user"
+                app:layout_constraintStart_toStartOf="@id/img_item_user"
+                app:layout_constraintTop_toBottomOf="@id/img_item_user"
+                tools:text="Jonas Selman" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="@color/gray_light"
+                android:onClick="@{() -> viewModel.onClick(viewModel.VIEW_GITHUB)}"
+                app:cardCornerRadius="30dp"
+                app:invisible="@{viewModel.user.html_url.empty}"
+                app:layout_constraintBottom_toBottomOf="@id/name_item_user"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/name_item_user">
+
+                <TextView
+                    android:id="@+id/view_perfil_link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/gray"
+                    android:padding="5dp"
+                    android:text="@string/open_github"
+                    android:textColor="@color/black" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/edit_search_user_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:clickable="false"
+                android:hint="@string/search_new_perfil"
+                android:onClick="@{() -> viewModel.onClick(viewModel.SEARCH_USER)}"
+                app:boxCornerRadiusBottomEnd="20dp"
+                app:boxCornerRadiusBottomStart="20dp"
+                app:boxCornerRadiusTopEnd="20dp"
+                app:boxCornerRadiusTopStart="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/img_item_user"
+                app:layout_constraintTop_toBottomOf="@id/name_item_user">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_search_user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:drawableEnd="@drawable/ic_search"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textFilter|text"
+                    android:maxLines="1"
+                    android:onClick="@{() -> viewModel.onClick(viewModel.SEARCH_USER)}"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.breno.gitviewer.custom.CustomDialog
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/name_item_user"
+                tools:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_post_item_user"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="10dp"
+                app:adapter="@{viewModel.adapter}"
+                app:empty="@{viewModel.empty}"
+                app:invisible="@{viewModel.error}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_search_user_layout"
+                app:skeleton="@{viewModel.repositories.size() &lt;= 0 &amp; !viewModel.empty}"
+                tools:listitem="@layout/item_user_repositorie"
+                tools:visibility="visible" />
+
+            <include
+                layout="@layout/layout_empty"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_search_user_layout"
+                app:visible="@{viewModel.empty}" />
+
+
+            <include
+                layout="@layout/layout_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/edit_search_user_layout"
+                app:onClickRetry="@{() -> viewModel.onClick(viewModel.RETRY)}"
+                app:visible="@{viewModel.error}"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

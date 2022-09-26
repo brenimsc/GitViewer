@@ -1,7 +1,9 @@
 package com.breno.gitviewer.model
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class User(
     val login: String,
     val avatar_url: String,
@@ -18,4 +20,4 @@ data class User(
     val followers: String?,
     val following: String?,
     val created_at: String?,
-) : Serializable
+) : Parcelable

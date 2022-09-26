@@ -1,29 +1,34 @@
 package com.breno.gitviewer.user.ui
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.breno.gitviewer.follow.ui.FollowFragment
-import com.breno.gitviewer.slide.SlideUserListActivity
-import com.breno.gitviewer.databinding.ItemUserBinding
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import com.breno.gitviewer.databinding.PerfilUserBinding
+import com.breno.gitviewer.extensions.backToActivityMain
+import com.breno.gitviewer.extensions.goActivity
+import com.breno.gitviewer.extensions.goToLink
 import com.breno.gitviewer.model.User
-import com.breno.gitviewer.adapter.AdapterRepository
+import com.breno.gitviewer.slide.ui.SlideUserListActivity
+import com.breno.gitviewer.user.SearchUserActivity
 import com.breno.gitviewer.user.viewmodel.UserDetailsViewModel
+import com.breno.gitviewer.user.viewmodel.UserDetailsViewModel.Companion.BACK
+import com.breno.gitviewer.user.viewmodel.UserDetailsViewModel.Companion.CLOSE
+import com.breno.gitviewer.user.viewmodel.UserDetailsViewModel.Companion.REQUEST_GET_USER_ERROR
+import com.breno.gitviewer.user.viewmodel.UserDetailsViewModel.Companion.REQUEST_GET_USER_SUCESS
+import com.breno.gitviewer.user.viewmodel.UserDetailsViewModel.Companion.SEARCH_USER
+import com.breno.gitviewer.user.viewmodel.UserDetailsViewModel.Companion.USERS_FOLLOWERS
+import com.breno.gitviewer.user.viewmodel.UserDetailsViewModel.Companion.USERS_FOLLOWING
+import com.breno.gitviewer.user.viewmodel.UserDetailsViewModel.Companion.VIEW_GITHUB
 import com.breno.gitviewer.utils.Constants
-import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 
 class UserDetailsActivity : AppCompatActivity() {
 
-    private lateinit var binding: ItemUserBinding
+    private lateinit var binding: PerfilUserBinding
 
     private val user by lazy {
-        intent?.getSerializableExtra(Constants.BUNDLE_USER) as User
-    }
-
-    private val adapter: AdapterRepository by lazy {
-        AdapterRepository(this@UserDetailsActivity)
+        intent?.getParcelableExtra(Constants.BUNDLE_USER) as? User
     }
 
     private val viewModel: UserDetailsViewModel by inject {
@@ -32,40 +37,45 @@ class UserDetailsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ItemUserBinding.inflate(layoutInflater)
+        binding = PerfilUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.apply {
             viewModel = this@UserDetailsActivity.viewModel
-            Glide.with(binding.root)
-                .load(user.avatar_url)
-                .into(imgItemUser)
-            recyclerPostItemUser.adapter = adapter
+            lifecycleOwner = this@UserDetailsActivity
         }
 
-        viewModel.repositories.observe(this) { list ->
-            list?.takeIf {
-                true
-            }?.run {
-                adapter.setList(this)
-            }
-        }
-
-        viewModel.navigation.observe(this) {
-            when (it) {
-                UserDetailsViewModel.USERS_FOLLOWERS -> {
-                    Intent(this, SlideUserListActivity::class.java).apply {
-                        putExtra(Constants.BUNDLE_USER, user.login)
-                        putExtra(Constants.BUNDLE_FIRST_TAB, Constants.FOLLOWERS)
-                        startActivity(this)
-                    }
+        viewModel.run {
+            response.observe(this@UserDetailsActivity) { RESPONSE ->
+                when (RESPONSE) {
+                    REQUEST_GET_USER_SUCESS -> setAdapter()
+                    REQUEST_GET_USER_ERROR -> setErrorEnabled()
                 }
-                UserDetailsViewModel.USERS_FOLLOWING -> {
-                    Intent(this, SlideUserListActivity::class.java).apply {
-                        putExtra(Constants.BUNDLE_USER, user.login)
-                        putExtra(Constants.BUNDLE_FIRST_TAB, Constants.FOLLOWING)
-                        startActivity(this)
-                    }
+            }
+
+            navigation.observe(this@UserDetailsActivity) { NAVIGATION ->
+                when (NAVIGATION) {
+                    USERS_FOLLOWERS -> goActivity(
+                        SlideUserListActivity::class.java,
+                        bundleOf(
+                            Constants.BUNDLE_USER to user.login,
+                            Constants.BUNDLE_FIRST_TAB to Constants.FOLLOWERS
+                        )
+                    )
+                    USERS_FOLLOWING -> goActivity(
+                        SlideUserListActivity::class.java,
+                        bundleOf(
+                            Constants.BUNDLE_USER to user.login,
+                            Constants.BUNDLE_FIRST_TAB to Constants.FOLLOWING
+                        )
+                    )
+                    SEARCH_USER -> goActivity(
+                        SearchUserActivity::class.java,
+                        bundleOf()
+                    )
+                    VIEW_GITHUB -> goToLink(user.html_url)
+                    BACK -> onBackPressed()
+                    CLOSE -> backToActivityMain()
                 }
             }
         }

@@ -10,5 +10,7 @@ data class RepositoryGitResponse(
     val updated_at: String?,
     val default_branch: String?,
     val language: String?,
-    val contributors_url: String?
+    val contributors_url: String?,
+    val subscribers_url: String?,
+    val stargazers_url: String?
 )

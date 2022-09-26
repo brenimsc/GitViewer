@@ -5,299 +5,337 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.breno.gitviewer.post.viewmodel.PostDetailViewModel" />
+
+        <import type="com.breno.gitviewer.R" />
+
+        <import type="com.breno.gitviewer.extensions.ContextExtensionsKt" />
     </data>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".post.ui.PostsDetailActivity">
-
-        <TextView
-            android:id="@+id/txt_description_details_post"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="20dp"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_click_view_person_details_posts"
-            android:text="@{viewModel.name.toString()}"
-            tools:text="Lista de empresas com trabalho remoto no Brasil" />
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img_user_details_posts"
-            android:layout_margin="10dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:background="@color/black"
-            android:layout_width="120dp"
-            android:layout_height="120dp"/>
-
-        <TextView
-            android:id="@+id/txt_name_user_details_posts"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="Joao Batista"
-            android:textSize="19sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_user_details_posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <View
-            android:id="@+id/view_click_view_person_details_posts"
-            android:onClick="@{() -> viewModel.onNavigation(viewModel.USER_PERFIL)}"
-            app:layout_constraintStart_toStartOf="@id/img_person_details_posts"
-            app:layout_constraintEnd_toEndOf="@id/txt_view_person_details_posts"
-            app:layout_constraintTop_toTopOf="@id/img_person_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_person_details_posts"
-            android:layout_width="0dp"
-            android:layout_height="0dp"/>
-
-        <ImageView
-            android:id="@+id/img_person_details_posts"
-            app:layout_constraintStart_toStartOf="@+id/txt_name_user_details_posts"
-            app:layout_constraintEnd_toStartOf="@+id/txt_view_person_details_posts"
-            app:layout_constraintTop_toTopOf="@id/txt_view_person_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/txt_view_person_details_posts"
-            android:src="@drawable/ic_person"
-            android:layout_marginEnd="4dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/txt_view_person_details_posts"
-            android:text="@string/view_person"
-            android:paddingEnd="10dp"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="@color/gray"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toEndOf="@+id/img_person_details_posts"
-            app:layout_constraintEnd_toEndOf="@+id/txt_name_user_details_posts"
-            app:layout_constraintTop_toBottomOf="@id/txt_name_user_details_posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <ImageView
-            android:layout_marginTop="8dp"
-            android:id="@+id/img_eyes_details_posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:src="@drawable/ic_eyes"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_description_details_post" />
-
-        <TextView
-            android:id="@+id/txt_visualizadores_qtd_details_posts"
-            app:layout_constraintStart_toEndOf="@id/img_eyes_details_posts"
-            app:layout_constraintTop_toTopOf="@id/img_eyes_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_eyes_details_posts"
-            tools:text="4000 visualizacões"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <View
-            android:id="@+id/view_click_stargazers_posts_details"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:onClick="@{() -> viewModel.onNavigation(viewModel.USER_LIST_STARGAZERS)}"
-            app:layout_constraintTop_toTopOf="@id/img_star_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_star_details_posts"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+            android:layout_height="match_parent"
+            tools:context=".post.ui.PostsDetailActivity">
 
-        <ImageView
-            android:id="@+id/img_star_details_posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:src="@drawable/ic_star"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_eyes_details_posts" />
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/txt_stars_qtd_details_posts"
-            app:layout_constraintStart_toEndOf="@id/img_star_details_posts"
-            app:layout_constraintTop_toTopOf="@id/img_star_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_star_details_posts"
-            tools:text="4000 estrelas"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/img_arrow_right_watchers_details_posts"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toTopOf="@id/img_star_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_star_details_posts"
-            android:src="@drawable/ic_arrow_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+                    <androidx.appcompat.widget.Toolbar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="?attr/actionBarSize"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:title="Detalhes"
+                        app:titleMarginStart="48dp"
+                        app:titleTextColor="@color/white" />
 
-        <View
-            android:id="@+id/view_click_subscribes_posts_details"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:onClick="@{() -> viewModel.onNavigation(viewModel.USER_LIST_SUBSCRIBERS)}"
-            app:layout_constraintTop_toTopOf="@id/img_subscribes_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_subscribes_details_posts"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/ic_arrow_left"
+                        android:onClick="@{() -> viewModel.onClick(viewModel.BACK)}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/white" />
 
-        <ImageView
-            android:id="@+id/img_subscribes_details_posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:src="@drawable/ic_inscritos"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_star_details_posts" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/txt_subscribes_qtd_details_posts"
-            app:layout_constraintStart_toEndOf="@id/img_subscribes_details_posts"
-            app:layout_constraintTop_toTopOf="@id/img_subscribes_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_subscribes_details_posts"
-            tools:text="4000 inscritos"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            </com.google.android.material.appbar.AppBarLayout>
 
-        <ImageView
-            android:id="@+id/img_arrow_right_subscribes_details_posts"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toTopOf="@id/img_subscribes_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_subscribes_details_posts"
-            android:src="@drawable/ic_arrow_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_regular"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize"
+                app:invisible="@{viewModel.error}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/txt_description_details_post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:text="@{viewModel.repositoryGit.description ?? ContextExtensionsKt.getString(context, R.string.no_description)}"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_click_view_person_details_posts"
+                    tools:text="Lista de empresas com trabalho remoto no Brasil" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_user_details_posts"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_margin="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:loadImage="@{viewModel.repositoryGit.owner.avatar_url}"
+                    tools:background="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_name_user_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@{viewModel.repositoryGit.owner.login}"
+                    android:textColor="@color/black"
+                    android:textSize="19sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/img_user_details_posts"
+                    tools:text="Joao Batista" />
+
+                <View
+                    android:id="@+id/view_click_view_person_details_posts"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:onClick="@{() -> viewModel.onClick(viewModel.USER_PERFIL)}"
+                    app:layout_constraintBottom_toBottomOf="@id/img_person_details_posts"
+                    app:layout_constraintEnd_toEndOf="@id/txt_view_person_details_posts"
+                    app:layout_constraintStart_toStartOf="@id/img_person_details_posts"
+                    app:layout_constraintTop_toTopOf="@id/img_person_details_posts" />
+
+                <ImageView
+                    android:id="@+id/img_person_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_person"
+                    app:layout_constraintBottom_toBottomOf="@id/txt_view_person_details_posts"
+                    app:layout_constraintEnd_toStartOf="@+id/txt_view_person_details_posts"
+                    app:layout_constraintStart_toStartOf="@+id/txt_name_user_details_posts"
+                    app:layout_constraintTop_toTopOf="@id/txt_view_person_details_posts" />
+
+                <TextView
+                    android:id="@+id/txt_view_person_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/view_person"
+                    android:textColor="@color/gray"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="@+id/txt_name_user_details_posts"
+                    app:layout_constraintStart_toEndOf="@+id/img_person_details_posts"
+                    app:layout_constraintTop_toBottomOf="@id/txt_name_user_details_posts" />
+
+                <ImageView
+                    android:id="@+id/img_eyes_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="20dp"
+                    android:src="@drawable/ic_eyes"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_description_details_post" />
+
+                <TextView
+                    android:id="@+id/txt_watchers_qtd_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{ContextExtensionsKt.getString(context, R.string.visualizacao, viewModel.repositoryGit.watchers_count.toString())}"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="@id/img_eyes_details_posts"
+                    app:layout_constraintStart_toEndOf="@id/img_eyes_details_posts"
+                    app:layout_constraintTop_toTopOf="@id/img_eyes_details_posts"
+                    tools:text="4000 visualizacões" />
+
+                <View
+                    android:id="@+id/view_click_stargazers_posts_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:onClick="@{() -> viewModel.onClick(viewModel.USER_LIST_STARGAZERS)}"
+                    app:layout_constraintBottom_toBottomOf="@id/img_star_details_posts"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/img_star_details_posts" />
+
+                <ImageView
+                    android:id="@+id/img_star_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:src="@drawable/ic_star"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/img_eyes_details_posts" />
+
+                <TextView
+                    android:id="@+id/txt_stars_qtd_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{ContextExtensionsKt.getString(context, R.string.stars, viewModel.repositoryGit.stargazers_count.toString())}"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="@id/img_star_details_posts"
+                    app:layout_constraintStart_toEndOf="@id/img_star_details_posts"
+                    app:layout_constraintTop_toTopOf="@id/img_star_details_posts"
+                    tools:text="4000 estrelas" />
+
+                <ImageView
+                    android:id="@+id/img_arrow_right_watchers_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_arrow_right"
+                    app:layout_constraintBottom_toBottomOf="@id/img_star_details_posts"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/img_star_details_posts" />
+
+                <View
+                    android:id="@+id/view_click_subscribes_posts_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:onClick="@{() -> viewModel.onClick(viewModel.USER_LIST_SUBSCRIBERS)}"
+                    app:layout_constraintBottom_toBottomOf="@id/img_subscribes_details_posts"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/img_subscribes_details_posts" />
+
+                <ImageView
+                    android:id="@+id/img_subscribes_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:src="@drawable/ic_inscritos"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/img_star_details_posts" />
+
+                <TextView
+                    android:id="@+id/txt_subscribes_qtd_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{ContextExtensionsKt.getString(context, R.string.subscribes, viewModel.repositoryGit.stargazers_count.toString())}"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="@id/img_subscribes_details_posts"
+                    app:layout_constraintStart_toEndOf="@id/img_subscribes_details_posts"
+                    app:layout_constraintTop_toTopOf="@id/img_subscribes_details_posts"
+                    tools:text="4000 inscritos" />
+
+                <ImageView
+                    android:id="@+id/img_arrow_right_subscribes_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_arrow_right"
+                    app:layout_constraintBottom_toBottomOf="@id/img_subscribes_details_posts"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/img_subscribes_details_posts" />
+
+                <ImageView
+                    android:id="@+id/img_att_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:src="@drawable/ic_att_post"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/img_subscribes_details_posts" />
+
+                <TextView
+                    android:id="@+id/txt_att_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.repositoryGit.updated_at}"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    app:layout_constraintBottom_toBottomOf="@id/img_att_details_posts"
+                    app:layout_constraintStart_toEndOf="@id/img_att_details_posts"
+                    app:layout_constraintTop_toTopOf="@id/img_att_details_posts"
+                    tools:text="25/04/2020" />
 
 
-        <View
-            android:id="@+id/view_click_contribuitors_posts_details"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:onClick="@{() -> viewModel.onNavigation(viewModel.USER_LIST_CONTRIBUITORS)}"
-            app:layout_constraintTop_toTopOf="@id/img_contribuitors_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_contribuitors_details_posts"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+                <TextView
+                    android:id="@+id/txt_last_update_details_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/last_update"
+                    android:textColor="@color/gray_light"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_att_details_posts" />
+
+                <View
+                    android:id="@+id/view_details_posts"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:background="@color/gray_separator"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_last_update_details_posts" />
+
+                <TextView
+                    android:id="@+id/txt_info_recycler"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/last_events"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_details_posts" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_events_details_posts"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:adapter="@{viewModel.adapterEvent}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txt_info_recycler"
+                    app:skeleton="@{viewModel.events.size() &lt;= 0}" />
 
 
-        <ImageView
-            android:id="@+id/img_contribuitors_details_posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:src="@drawable/ic_contribuitors"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_subscribes_details_posts" />
+                <com.breno.gitviewer.custom.CustomDialog
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_info_recycler"
+                    app:loading="@{viewModel.loading}" />
 
-        <TextView
-            android:id="@+id/txt_contribuitors_qtd_details_posts"
-            app:layout_constraintStart_toEndOf="@id/img_contribuitors_details_posts"
-            app:layout_constraintTop_toTopOf="@id/img_contribuitors_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_contribuitors_details_posts"
-            tools:text="4000 contribuidores"
-            android:textColor="@color/black"
-            android:text="@string/contribuitors"
-            android:textSize="17sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
-            android:id="@+id/img_arrow_right_details_posts"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toTopOf="@id/img_contribuitors_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_contribuitors_details_posts"
-            android:src="@drawable/ic_arrow_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            <include
+                android:id="@+id/layout_error"
+                layout="@layout/layout_error"
+                app:onClickRetry="@{() -> viewModel.onClick(viewModel.RETRY)}"
+                app:visible="@{viewModel.error}"
+                tools:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/img_att_details_posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:src="@drawable/ic_att_post"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/img_contribuitors_details_posts" />
-
-        <TextView
-            android:id="@+id/txt_att_details_posts"
-            app:layout_constraintStart_toEndOf="@id/img_att_details_posts"
-            app:layout_constraintTop_toTopOf="@id/img_att_details_posts"
-            app:layout_constraintBottom_toBottomOf="@id/img_att_details_posts"
-            tools:text="25/04/2020"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-        <TextView
-            android:id="@+id/txt_last_update_details_posts"
-            android:text="@string/last_update"
-            android:textStyle="italic"
-            android:textColor="@color/gray_light"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_att_details_posts"
-            android:layout_marginEnd="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <View
-            android:id="@+id/view_details_posts"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_last_update_details_posts"
-            android:background="@color/gray_separator"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"/>
-
-        <TextView
-            android:id="@+id/txt_info_recycler"
-            android:text="Últimos eventos relacionados a este repositório"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_details_posts"
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_events_details_posts"
-            android:layout_marginTop="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_info_recycler"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 

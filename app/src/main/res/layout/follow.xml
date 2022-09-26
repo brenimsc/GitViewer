@@ -2,8 +2,7 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".user.ui.UserListActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -21,12 +20,20 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginBottom="70dp"
+            app:adapter="@{viewModel.adapter}"
+            app:empty="@{viewModel.empty}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:qtdSkeleton="@{9}"
+            app:skeleton="@{viewModel.users.size() &lt;= 0 &amp; !viewModel.empty}"
             tools:listitem="@layout/item_user_list" />
+
+        <include
+            layout="@layout/layout_empty"
+            app:visible="@{viewModel.empty}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

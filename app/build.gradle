@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id("kotlin-parcelize")
 }
 
 android {
@@ -66,6 +67,8 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
     implementation "com.squareup.retrofit2:converter-gson:2.3.0"
 
+    implementation project(':customadapter')
+
     //Okhttp
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
 
@@ -85,6 +88,9 @@ dependencies {
 
     //viewModelScope
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+
+    //skeleton
+    implementation 'com.faltenreich:skeletonlayout:4.0.0'
 
 
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'

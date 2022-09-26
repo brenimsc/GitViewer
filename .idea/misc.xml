@@ -4,20 +4,30 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.23802083333333332" />
+        <entry key="app/src/main/res/drawable/ic_danger.xml" value="0.155" />
+        <entry key="app/src/main/res/drawable/ic_error_exclamacao.xml" value="0.155" />
+        <entry key="app/src/main/res/drawable/ic_search.xml" value="0.155" />
         <entry key="app/src/main/res/drawable/ic_star.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_posts_detail.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_search_user.xml" value="0.24682971014492755" />
         <entry key="app/src/main/res/layout/activity_slide_user_list.xml" value="0.17760416666666667" />
-        <entry key="app/src/main/res/layout/activity_user_list.xml" value="0.125" />
-        <entry key="app/src/main/res/layout/follow.xml" value="0.1953125" />
+        <entry key="app/src/main/res/layout/activity_user_list.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/custom_dialog_loading.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/follow.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_user_list.xml" value="0.17760416666666667" />
         <entry key="app/src/main/res/layout/item_events.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_posts.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_user.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_user_list.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_user_repositorie.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/layout_empty.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/layout_error.xml" value="0.25" />
         <entry key="app/src/main/res/layout/nav_bar.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/perfil_user.xml" value="0.165" />
         <entry key="app/src/main/res/layout/qtd_description.xml" value="0.5" />
+        <entry key="customadapter/src/main/res/layout/activity_main.xml" value="0.24682971014492755" />
+        <entry key="myapplication/adaptergeneric/src/main/res/layout/activity_main.xml" value="0.15833333333333333" />
       </map>
     </option>
   </component>

@@ -11,7 +11,10 @@ object Constants {
     const val BUNDLE_URL_USER = "urlUser"
     const val BUNDLE_TYPE_USER = "typeUser"
 
-    const val FOLLOWERS = "followers"
     const val FOLLOWING = "following"
+    const val FOLLOWERS = "followers"
+
+    const val FOLLOWING_NUMBER_PAGE = 1
+    const val FOLLOWERS_NUMBER_PAGE = 0
 
 }

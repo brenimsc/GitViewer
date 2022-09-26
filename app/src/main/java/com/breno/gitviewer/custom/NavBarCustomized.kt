@@ -1,4 +1,4 @@
-package com.breno.gitviewer
+package com.breno.gitviewer.custom
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
+import com.breno.gitviewer.R
 import com.breno.gitviewer.databinding.NavBarBinding
 
 class NavBarCustomized @JvmOverloads constructor(

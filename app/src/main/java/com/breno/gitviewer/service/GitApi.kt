@@ -1,28 +1,27 @@
 package com.breno.gitviewer.service
 
-import com.breno.gitviewer.model.*
-import io.reactivex.Single
-import retrofit2.http.*
+import com.breno.gitviewer.model.Event
+import com.breno.gitviewer.model.PostsResponse
+import com.breno.gitviewer.model.RepositoryGitResponse
+import com.breno.gitviewer.model.User
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface GitApi {
 
-    @Headers("Username:brenimsc", "Password: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")
     @GET("search/repositories")
-    suspend fun getPosts(@Query("q") query: String = "brazil") : PostsResponse
+    suspend fun getPosts(@Query("q") query: String) : PostsResponse
 
-    @Headers("Username:brenimsc", "Password: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")
     @GET("repos/{user}/{endpoint}")
     suspend fun getRepoUser(@Path("user") user: String, @Path("endpoint") endpoint: String) : RepositoryGitResponse
 
-    @Headers("Username:brenimsc", "Password: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")
     @GET("repos/{user}/{repo}/events")
     suspend fun getEvents(@Path("user") user: String, @Path("repo") endpoint: String) : List<Event>
 
-    @Headers("Username:brenimsc", "Password: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")
     @GET("users/{user}")
     suspend fun getUser(@Path("user") user: String) : User
 
-    @Headers("Username:brenimsc", "Password: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")
     @GET("users/{user}/repos")
     suspend fun getUserRepos(@Path("user") user: String) : List<RepositoryGitResponse>
 
@@ -40,10 +39,6 @@ interface GitApi {
 
     @GET("users/{user}/following")
     suspend fun getUserFollowing(@Path("user") user: String) : List<User>
-
-    @Headers("Username:brenimsc", "Password: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")
-    @GET("repos/{user}/{endpoint}/contribuitors")
-    suspend fun getRepoContribuitors(@Path("user") user: String, @Path("endpoint") endpoint: String) : RepositoryGitResponse
 
 
 }

@@ -1,4 +1,4 @@
-package com.breno.gitviewer
+package com.breno.gitviewer.custom
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import com.breno.gitviewer.R
 import com.breno.gitviewer.databinding.QtdDescriptionBinding
 
 class CountDescription @JvmOverloads constructor(
@@ -33,13 +34,6 @@ class CountDescription @JvmOverloads constructor(
         binding = QtdDescriptionBinding.inflate(LayoutInflater.from(context), this, true)
     }
 
-//    private fun setText() {
-//        binding.descriptionItem.text = description
-////        binding.qtdItem.apply {
-////            text = qtd
-////            if (qtd?.toInt() == 0) setTextColor(ContextCompat.getColor(context, R.color.gray_light))
-////        }
-//    }
 
     private fun setLayout(attrs: AttributeSet?) {
         attrs?.let {
@@ -48,11 +42,11 @@ class CountDescription @JvmOverloads constructor(
                 R.styleable.CountDescription
             )
 
-           attributes.getResourceId(R.styleable.CountDescription_qtd, 0).takeIf { it != 0 }?.run {
-               context.getString(this)
-           }?.apply {
-               setQtd(this)
-           }
+            attributes.getResourceId(R.styleable.CountDescription_qtd, 0).takeIf { it != 0 }?.run {
+                context.getString(this)
+            }?.apply {
+                setQtd(this)
+            }
 
             setDescription(attributes.getString(R.styleable.CountDescription_description).orEmpty())
 

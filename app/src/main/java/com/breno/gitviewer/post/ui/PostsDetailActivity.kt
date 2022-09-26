@@ -1,28 +1,35 @@
 package com.breno.gitviewer.post.ui
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.breno.gitviewer.R
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import com.breno.gitviewer.databinding.ActivityPostsDetailBinding
-import com.breno.gitviewer.goActivity
+import com.breno.gitviewer.extensions.goActivity
+import com.breno.gitviewer.extensions.goActivityWithCondition
 import com.breno.gitviewer.post.viewmodel.PostDetailViewModel
-import com.breno.gitviewer.adapter.AdapterEvents
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.BACK
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.REQUEST_ERROR
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.REQUEST_EVENTS
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.REQUEST_EVENTS_ERROR
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.REQUEST_EVENTS_SUCCESS
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.REQUEST_REPO_ERROR
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.REQUEST_REPO_SUCCESS
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.REQUEST_USER
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.REQUEST_USER_ERROR
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.REQUEST_USER_SUCCESS
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.USER_LIST_STARGAZERS
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.USER_LIST_SUBSCRIBERS
+import com.breno.gitviewer.post.viewmodel.PostDetailViewModel.Companion.USER_LOADED
 import com.breno.gitviewer.user.ui.UserDetailsActivity
 import com.breno.gitviewer.user.ui.UserListActivity
 import com.breno.gitviewer.user.viewmodel.UserListViewModel
 import com.breno.gitviewer.utils.Constants
-import com.bumptech.glide.Glide
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 class PostsDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPostsDetailBinding
-
-    private val adapterEvent by lazy {
-        AdapterEvents(this)
-    }
 
     private val viewModel: PostDetailViewModel by viewModel {
         parametersOf(
@@ -36,87 +43,58 @@ class PostsDetailActivity : AppCompatActivity() {
         binding = ActivityPostsDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.viewModel = viewModel
-
-        binding.recyclerEventsDetailsPosts.adapter = adapterEvent
-
-        viewModel.post.observe(this) { repositoryGit ->
-            binding.apply {
-                txtAttDetailsPosts.text = repositoryGit.updated_at
-                txtContribuitorsQtdDetailsPosts.text =
-                    getString(R.string.contribuitors, repositoryGit.subscribers_count.toString())
-                txtDescriptionDetailsPost.text = repositoryGit.description
-                txtNameUserDetailsPosts.text = repositoryGit.owner?.login
-                txtStarsQtdDetailsPosts.text =
-                    getString(R.string.stars, repositoryGit.stargazers_count.toString())
-                txtSubscribesQtdDetailsPosts.text =
-                    getString(R.string.subscribes, repositoryGit.subscribers_count.toString())
-                txtVisualizadoresQtdDetailsPosts.text =
-                    getString(R.string.visualizacao, repositoryGit.watchers_count.toString())
-                Glide.with(this@PostsDetailActivity).load(repositoryGit.owner?.avatar_url)
-                    .centerCrop()
-                    .into(imgUserDetailsPosts)
-            }
+        binding.apply {
+            viewModel = this@PostsDetailActivity.viewModel
+            lifecycleOwner = this@PostsDetailActivity
         }
 
-        viewModel.events.observe(this) { events ->
-            adapterEvent.setList(events)
-        }
+        viewModel.run {
 
-        viewModel.navigation.observe(this) {
-            when (it) {
-                PostDetailViewModel.USER_PERFIL -> viewModel.onRequest(PostDetailViewModel.REQUEST_USER)
+            navigation.observe(this@PostsDetailActivity) { NAVIGATION ->
+                when (NAVIGATION) {
+                    USER_LIST_SUBSCRIBERS -> goActivityWithCondition(
+                        UserListActivity::class.java,
+                        bundleOf(
+                            Constants.BUNDLE_TYPE_USER to UserListViewModel.SUBSCRIBERS,
+                            Constants.BUNDLE_URL_USER to repositoryGit.value?.subscribers_url
+                        ),
+                        !repositoryGit.value?.contributors_url.isNullOrBlank()
+                    )
 
-                PostDetailViewModel.USER_LIST_CONTRIBUITORS -> Intent(
-                    this,
-                    UserListActivity::class.java
-                ).apply {
-                    putExtra(Constants.BUNDLE_TYPE_USER, UserListViewModel.CONTRIBUTORS)
-                    putExtra(
-                        Constants.BUNDLE_URL_USER,
-                        viewModel.post.value?.contributors_url
+                    USER_LIST_STARGAZERS -> goActivityWithCondition(
+                        UserListActivity::class.java,
+                        bundleOf(
+                            Constants.BUNDLE_TYPE_USER to UserListViewModel.STARGAZERS,
+                            Constants.BUNDLE_URL_USER to repositoryGit.value?.stargazers_url
+                        ),
+                        !repositoryGit.value?.contributors_url.isNullOrBlank()
                     )
-                    startActivity(this)
-                }
-                PostDetailViewModel.USER_LIST_SUBSCRIBERS -> Intent(
-                    this,
-                    UserListActivity::class.java
-                ).apply {
-                    putExtra(Constants.BUNDLE_TYPE_USER, UserListViewModel.SUBSCRIBERS)
-                    putExtra(
-                        Constants.BUNDLE_URL_USER,
-                        viewModel.post.value?.contributors_url
+
+                    USER_LOADED -> goActivity(
+                        UserDetailsActivity::class.java,
+                        bundleOf(Constants.BUNDLE_USER to user)
                     )
-                    startActivity(this)
-                }
-                PostDetailViewModel.USER_LIST_STARGAZERS -> Intent(
-                    this,
-                    UserListActivity::class.java
-                ).apply {
-                    putExtra(Constants.BUNDLE_TYPE_USER, UserListViewModel.STARGAZERS)
-                    putExtra(
-                        Constants.BUNDLE_URL_USER,
-                        viewModel.post.value?.contributors_url
-                    )
-                    startActivity(this)
+
+                    BACK -> onBackPressed()
                 }
             }
-        }
 
-        viewModel.request.observe(this) {
-            when (it) {
-                PostDetailViewModel.REQUEST_USER -> viewModel.executeRequestUser()
+            request.observe(this@PostsDetailActivity) { REQUEST ->
+                when (REQUEST) {
+                    REQUEST_USER -> executeRequestUser()
+                    REQUEST_EVENTS -> executeRequestEvents(repo, nameUser)
+                }
             }
-        }
 
-        viewModel.response.observe(this) {
-            when (it) {
-                PostDetailViewModel.REQUEST_USER_OK -> goActivity(
-                    UserDetailsActivity::class.java,
-                    Constants.BUNDLE_USER,
-                    viewModel.user
-                )
+            response.observe(this@PostsDetailActivity) { RESPONSE ->
+                when (RESPONSE) {
+                    REQUEST_USER_SUCCESS -> onNavigation(USER_LOADED)
+                    REQUEST_EVENTS_SUCCESS -> setAdapter()
+                    REQUEST_REPO_SUCCESS -> onRequest(REQUEST_EVENTS)
+                    REQUEST_ERROR, REQUEST_USER_ERROR, REQUEST_EVENTS_ERROR, REQUEST_REPO_ERROR -> setErrorEnabled()
+                }
             }
+
         }
     }
 }

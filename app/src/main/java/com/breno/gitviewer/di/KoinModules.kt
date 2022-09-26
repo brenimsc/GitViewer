@@ -1,10 +1,12 @@
-package com.breno.gitviewer
+package com.breno.gitviewer.di
 
 import com.breno.gitviewer.follow.viewmodel.FollowViewModel
 import com.breno.gitviewer.main.viewmodel.MainViewModel
 import com.breno.gitviewer.model.User
 import com.breno.gitviewer.post.viewmodel.PostDetailViewModel
 import com.breno.gitviewer.service.GitApi
+import com.breno.gitviewer.slide.viewmodel.SlideUserListViewModel
+import com.breno.gitviewer.user.SearchUserViewModel
 import com.breno.gitviewer.user.viewmodel.UserDetailsViewModel
 import com.breno.gitviewer.user.viewmodel.UserListViewModel
 import com.squareup.moshi.KotlinJsonAdapterFactory
@@ -38,7 +40,7 @@ val moduleViewModel = module {
     viewModel { (repo: String, user: String) ->
         PostDetailViewModel(
             repo = repo,
-            user = user,
+            nameUser = user,
             service = get()
         )
     }
@@ -51,6 +53,14 @@ val moduleViewModel = module {
     }
     viewModel { (typeRequest: String) ->
         FollowViewModel(typeRequest, get())
+    }
+
+    viewModel { (firstTab: String) ->
+        SlideUserListViewModel(firstTab)
+    }
+
+    viewModel {
+        SearchUserViewModel(get())
     }
 
 }

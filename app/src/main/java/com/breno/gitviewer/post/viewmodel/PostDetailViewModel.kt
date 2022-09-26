@@ -1,106 +1,188 @@
 package com.breno.gitviewer.post.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.*
-import com.breno.gitviewer.service.GitApi
+import androidx.annotation.IntDef
+import androidx.annotation.StringDef
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.breno.customadapter.UseAdapter
+import com.breno.gitviewer.BR
+import com.breno.gitviewer.R
 import com.breno.gitviewer.model.Event
 import com.breno.gitviewer.model.RepositoryGitResponse
 import com.breno.gitviewer.model.User
-import kotlinx.coroutines.*
-import java.lang.Exception
+import com.breno.gitviewer.service.GitApi
+import com.breno.gitviewer.viewmodel.BaseViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
-class PostDetailViewModel(repo: String, user: String, private val service: GitApi) : ViewModel() {
+class PostDetailViewModel(val repo: String, val nameUser: String, private val service: GitApi) :
+    BaseViewModel() {
 
+
+    @Retention(AnnotationRetention.SOURCE)
+    @IntDef(
+        USER_LIST_STARGAZERS,
+        USER_LIST_SUBSCRIBERS,
+        USER_LOADED,
+        RETRY,
+        BACK
+    )
+    annotation class Navigation
+
+    @IntDef(USER_PERFIL)
+    annotation class Request
+
+    @StringDef(
+        REQUEST_USER_SUCCESS,
+        REQUEST_EVENTS_SUCCESS,
+        REQUEST_REPO_SUCCESS,
+        REQUEST_ERROR,
+        REQUEST_EVENTS_ERROR,
+        REQUEST_REPO_ERROR,
+        REQUEST_USER_ERROR
+    )
+    annotation class Response
 
     companion object {
         const val USER_PERFIL = 0
-        const val USER_LIST_CONTRIBUITORS = 1
         const val USER_LIST_STARGAZERS = 2
         const val USER_LIST_SUBSCRIBERS = 3
+        const val USER_LOADED = 4
+        const val RETRY = 5
+        const val BACK = 6
 
-        const val REQUEST_USER = 5
-        const val REQUEST_USER_OK = 6
+        const val REQUEST_USER = 6
+        const val REQUEST_EVENTS = 7
+        const val REQUEST_USER_SUCCESS = "RequestUserSuccess"
+        const val REQUEST_EVENTS_SUCCESS = "RequestEventsSuccess"
+        const val REQUEST_REPO_SUCCESS = "RequestRepoSuccess"
+        const val REQUEST_USER_ERROR = "RequestUserError"
+        const val REQUEST_EVENTS_ERROR = "RequestEventsError"
+        const val REQUEST_REPO_ERROR = "RequestRepoError"
+        const val REQUEST_ERROR = "RequestError"
+    }
+
+    val adapterEvent by lazy {
+        UseAdapter.getAdapter<Event>(R.layout.item_events, BR.event)
     }
 
     private val coroutine = CoroutineScope(Dispatchers.IO)
 
-    private val _post = MutableLiveData<RepositoryGitResponse>()
-    val post: LiveData<RepositoryGitResponse>
-    get() = _post
+    private val _repositoryGit = MutableLiveData<RepositoryGitResponse>()
+    val repositoryGit: LiveData<RepositoryGitResponse> get() = _repositoryGit
 
-    private val _events = MutableLiveData<List<Event>>()
-    val events: LiveData<List<Event>>
-        get() = _events
+    var events = MutableLiveData<List<Event>>()
+        private set
 
-    private val _navigation = MutableLiveData<Int>(null)
+    override var error = MutableLiveData<Boolean>()
+    override var loading = MutableLiveData<Boolean>()
+
+    private val _navigation = MutableLiveData<Int>()
     val navigation: LiveData<Int> get() = _navigation
 
-    private val _request = MutableLiveData<Int>(null)
+    private val _request = MutableLiveData<Int>()
     val request: LiveData<Int> get() = _request
 
-    private val _response = MutableLiveData<Int>(null)
-    val response: LiveData<Int> get() = _request
+    private val _response = MutableLiveData<String>()
+    val response: LiveData<String> get() = _response
 
     lateinit var user: User
-     private set
-
-    val name = MediatorLiveData<String>().apply {
-        addSource(post) { value = it.owner?.login}
-    }
+        private set
 
     init {
-        executeRequest(repo, user)
-        executeRequestEvents(repo, user)
+        executeRequestRepo(repo, nameUser)
     }
 
-    private fun executeRequest(repo: String, user: String) {
+    private fun executeRequestRepo(repo: String, user: String) {
+        onLoading()
         coroutine.launch {
             try {
                 val result = service.getRepoUser(user, repo)
-                _post.postValue(result)
-
+                _repositoryGit.postValue(result)
+                onResponse(REQUEST_REPO_SUCCESS)
             } catch (e: Exception) {
-                //* to do *//
                 Log.e("BRENOL", "${e.message} $e")
+                onResponse(REQUEST_REPO_ERROR)
+            } finally {
+                onStopLoading()
             }
         }
     }
 
-    private fun executeRequestEvents(repo: String, user: String) {
+    fun executeRequestEvents(repo: String, user: String) {
+        onLoading()
         coroutine.launch {
             try {
                 val result = service.getEvents(user, repo)
-                _events.postValue(result)
-
+                events.postValue(result)
+                onResponse(REQUEST_EVENTS_SUCCESS)
             } catch (e: Exception) {
-                // to do
                 Log.e("BRENOL", "${e.message} $e")
+                onResponse(REQUEST_EVENTS_ERROR)
+            } finally {
+                onStopLoading()
             }
         }
     }
 
     fun executeRequestUser() {
+        onLoading()
         coroutine.launch {
-            post.value?.let {
+            repositoryGit.value?.let {
                 try {
                     it.owner?.login?.let { login ->
                         user = service.getUser(login)
+                        onResponse(REQUEST_USER_SUCCESS)
                     }
-                    _request.postValue(REQUEST_USER_OK)
                 } catch (e: Exception) {
-
+                    Log.e("BRENOL", "${e.message} $e")
+                    onResponse(REQUEST_USER_ERROR)
+                } finally {
+                    onStopLoading()
                 }
             }
         }
     }
 
-    fun onNavigation(navigation: Int) {
-        Log.e("BRENOL", "Aqui $navigation")
+    fun onClick(@Navigation navigation: Int) {
+        when (navigation) {
+            USER_PERFIL -> onRequest(REQUEST_USER)
+            USER_LIST_STARGAZERS,
+            USER_LIST_SUBSCRIBERS,
+            BACK-> onNavigation(navigation)
+            RETRY -> handleErrorRequest(response.value)
+        }
+    }
+
+    private fun handleErrorRequest(response: String?) {
+        response?.let {
+            when (it) {
+                REQUEST_REPO_ERROR -> executeRequestRepo(repo, nameUser)
+                REQUEST_EVENTS_ERROR -> executeRequestEvents(repo, nameUser)
+                REQUEST_USER_ERROR -> executeRequestUser()
+                else -> Log.e("BRENOL", "Nada")
+            }
+        }
+    }
+
+    fun onNavigation(@Navigation navigation: Int) {
         _navigation.value = navigation
     }
 
-    fun onRequest(requestId: Int) {
+    fun onRequest(@Request requestId: Int) {
         _request.value = requestId
+    }
+
+    private fun onResponse(@Response response: String) {
+        _response.postValue(response)
+    }
+
+    override fun setAdapter() {
+        onStopLoading()
+        adapterEvent.clearAndAddAll(events.value ?: arrayListOf())
     }
 
     override fun onCleared() {
